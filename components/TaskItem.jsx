@@ -5,14 +5,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Play, Clock, MoreHorizontal, CheckCircle2 } from "lucide-react";
+import { Play, Clock, MoreHorizontal, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import TaskUpdates from "./TaskUpdates";
 
 export default function TaskItem({ task, onUpdate }) {
   const [showUpdates, setShowUpdates] = useState(false);
 
-  // Status Logic
   const isRunning = task.startTime && !task.isCompleted;
   const isOverdue = task.deadline && isPast(new Date(task.deadline)) && !task.isCompleted;
 
@@ -36,66 +35,65 @@ export default function TaskItem({ task, onUpdate }) {
     onUpdate();
   };
 
-  // Dynamic Styles
-  let borderClass = "border-slate-100";
-  if (isRunning) borderClass = "border-indigo-500 ring-1 ring-indigo-500/20";
-  if (isOverdue) borderClass = "border-red-500";
-  if (task.isCompleted) borderClass = "border-green-200 bg-green-50/30 opacity-60";
+  // Dark Mode Styles
+  let cardStyle = "bg-slate-900/50 border-white/10 hover:border-indigo-500/50";
+  if (isRunning) cardStyle = "bg-indigo-900/20 border-indigo-500/50 shadow-[0_0_30px_-10px_rgba(99,102,241,0.2)]";
+  if (isOverdue) cardStyle = "bg-red-900/10 border-red-500/50";
+  if (task.isCompleted) cardStyle = "bg-slate-900/30 border-white/5 opacity-50";
 
   return (
-    <Card className={`group mb-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${borderClass}`}>
-      <CardContent className="p-4 flex gap-4 items-start">
+    <Card className={`group transition-all duration-300 backdrop-blur-sm border ${cardStyle}`}>
+      <CardContent className="p-5 flex gap-5 items-start">
         
-        {/* Checkbox */}
         <div className="pt-1">
-            <Checkbox checked={task.isCompleted} onCheckedChange={handleToggle} className="w-5 h-5 rounded-full" />
+            <Checkbox 
+                checked={task.isCompleted} 
+                onCheckedChange={handleToggle} 
+                className="w-5 h-5 rounded-full border-slate-600 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 data-[state=checked]:text-black" 
+            />
         </div>
 
         <div className="flex-1 min-w-0">
-            {/* Header */}
             <div className="flex justify-between items-start">
-                <h3 className={`font-medium text-slate-900 ${task.isCompleted && "line-through text-slate-500"}`}>
+                <h3 className={`font-medium text-lg ${task.isCompleted ? "line-through text-slate-500" : "text-slate-200"}`}>
                     {task.title}
                 </h3>
-                <Button variant="ghost" size="icon" className="h-6 w-6 text-slate-400" onClick={() => setShowUpdates(!showUpdates)}>
-                    <MoreHorizontal className="h-4 w-4" />
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-white hover:bg-white/10" onClick={() => setShowUpdates(!showUpdates)}>
+                    <MoreHorizontal className="h-5 w-5" />
                 </Button>
             </div>
 
-            {/* Meta Tags */}
-            <div className="flex flex-wrap items-center gap-2 mt-2">
+            <div className="flex flex-wrap items-center gap-3 mt-3">
                 {task.timeLimit > 0 && (
-                    <Badge variant="secondary" className="bg-slate-100 text-slate-600 font-normal">
-                        <Clock className="w-3 h-3 mr-1" /> {task.timeLimit}m
+                    <Badge variant="outline" className="bg-white/5 text-slate-400 border-white/10 hover:bg-white/10">
+                        <Clock className="w-3 h-3 mr-2" /> {task.timeLimit}m
                     </Badge>
                 )}
                 {isOverdue && (
-                    <Badge variant="destructive" className="font-normal">Overdue</Badge>
+                    <Badge className="bg-red-500/20 text-red-400 border border-red-500/50">
+                        <AlertCircle className="w-3 h-3 mr-1"/> Overdue
+                    </Badge>
                 )}
             </div>
 
-            {/* Start Button (Only show if NOT running and NOT done) */}
             {!isRunning && !task.isCompleted && (
                 <Button 
                     size="sm" 
-                    variant="ghost"
                     onClick={handleStart} 
-                    className="mt-3 h-8 text-xs text-indigo-600 bg-indigo-50 hover:bg-indigo-100 w-full justify-start"
+                    className="mt-4 h-9 text-xs bg-indigo-600/20 text-indigo-300 hover:bg-indigo-600 hover:text-white border border-indigo-500/30 w-full md:w-auto justify-center md:justify-start"
                 >
-                    <Play className="w-3 h-3 mr-2 fill-indigo-600" /> Start Focus
+                    <Play className="w-3 h-3 mr-2 fill-current" /> Initialize Focus
                 </Button>
             )}
 
-            {/* Updates (Hidden by default) */}
             {showUpdates && (
-                <div className="mt-3 pt-3 border-t">
+                <div className="mt-4 pt-4 border-t border-white/10">
                     <TaskUpdates taskId={task._id} updates={task.updates} onUpdateAdded={onUpdate} />
                 </div>
             )}
             
-            {/* Subtasks */}
             {task.subtasks?.length > 0 && (
-                <div className="mt-3 pl-4 border-l-2 border-slate-200 space-y-2">
+                <div className="mt-4 pl-4 border-l border-white/10 space-y-3">
                     {task.subtasks.map(sub => <TaskItem key={sub._id} task={sub} onUpdate={onUpdate} />)}
                 </div>
             )}
