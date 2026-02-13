@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ⚡ FocusOS
 
-## Getting Started
+**FocusOS** is a next-generation task management application designed for high performers. It moves beyond simple lists by introducing a "Focus Player" concept—treating tasks like active missions with a persistent dock, time tracking, and a futuristic glassmorphism UI.
 
-First, run the development server:
+![FocusOS Dashboard](https://i.ibb.co.com/DPdD2YJV/screencapture-to-do-six-lilac-57-vercel-app-2026-02-13-15-43-08.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **🚀 Active Task Dock:** A persistent, floating "Now Playing" bar that keeps your current mission in focus regardless of where you scroll.
+* **🎨 Cyberpunk Glass UI:** A fully custom Dark Mode interface featuring glassmorphism, neon accents, and ambient gradients.
+* **⏳ Flexible Time Units:** Input time limits in Minutes, Hours, Days, or Weeks. The system auto-converts everything for accurate tracking.
+* **🔄 Recursive Subtasks:** Break down complex missions into infinite levels of nested subtasks.
+* **📝 Activity Logs:** Chat-style updates for every task to track progress (e.g., "Server down," "Waiting for client").
+* **🔐 Google Authentication:** Secure, one-click login via NextAuth.js.
+* **🎉 Gamified Completion:** Satisfying confetti explosions upon completing active missions.
+* **⚡ Real-time Urgency:** Visual cues for active, overdue, and completed tasks.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+* **Language:** JavaScript (JSX)
+* **Database:** [MongoDB](https://www.mongodb.com/) (Mongoose ORM)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Components:** [Shadcn UI](https://ui.shadcn.com/) (Radix Primitives)
+* **Authentication:** [NextAuth.js](https://next-auth.js.org/)
+* **Utilities:** `date-fns` (Time), `canvas-confetti` (Animations), `lucide-react` (Icons)
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+Follow these steps to run FocusOS locally on your machine.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Node.js (v18 or higher)
+* A MongoDB Atlas Account (Free Tier is fine)
+* A Google Cloud Console Project (for OAuth)
 
-## Deploy on Vercel
+## 📂 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+├── app/
+│   ├── api/             # Backend API Routes (Tasks, Auth, Updates)
+│   ├── layout.jsx       # Root layout & Global Context Providers
+│   └── page.jsx         # Main Dashboard (The "Command Center")
+├── components/
+│   ├── ui/              # Reusable Shadcn UI primitives
+│   ├── ActiveTaskDock.jsx  # Floating persistent bottom bar
+│   ├── TaskItem.jsx     # Recursive task card (supports nested sub-tasks)
+│   └── TaskUpdates.jsx  # Activity log & event stream component
+├── lib/
+│   └── db.js            # MongoDB / Mongoose connection helper
+└── models/
+    └── Task.js          # Mongoose Schema (Task Hierarchy)
